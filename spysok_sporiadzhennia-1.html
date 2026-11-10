@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python: робота зі списками — Список спорядження</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0b1220; --panel:#142238; --panel2:#1b3150; --accent:#31d6c2; --text:#edf5ff; --muted:#a9bdd4; --danger:#ff7777; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Arial, sans-serif; background:linear-gradient(135deg,#08111f,#10243c); color:var(--text); line-height:1.55; }
+    header { padding:42px 20px 30px; text-align:center; background:linear-gradient(120deg,#123b58,#135b67); }
+    header h1 { margin:0 0 10px; font-size:clamp(26px,5vw,42px); }
+    header p { margin:0; color:#d4f5f1; }
+    main { width:min(1000px,92%); margin:28px auto 60px; }
+    section { background:var(--panel); border:1px solid #294461; border-radius:16px; padding:22px; margin:18px 0; box-shadow:0 10px 25px #0003; }
+    h2 { margin-top:0; color:var(--accent); }
+    h3 { margin-bottom:8px; color:#d9eaff; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+    .item { background:var(--panel2); border-radius:12px; padding:14px; }
+    code, pre { font-family:Consolas, monospace; }
+    pre { background:#07101d; color:#c7f7eb; padding:16px; border-radius:10px; overflow-x:auto; white-space:pre-wrap; }
+    .controls { display:flex; flex-wrap:wrap; gap:9px; margin:12px 0; }
+    input, button { font:inherit; border-radius:9px; padding:11px 13px; }
+    input { flex:1; min-width:190px; border:1px solid #46617e; background:#091525; color:white; }
+    button { border:0; background:var(--accent); color:#06242a; font-weight:bold; cursor:pointer; }
+    button:hover { filter:brightness(1.1); }
+    button.secondary { background:#294967; color:white; }
+    button.remove { background:#6b303b; color:white; padding:6px 10px; }
+    ul { padding-left:22px; }
+    #gearList { list-style:none; padding:0; }
+    #gearList li { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:10px 12px; margin:7px 0; background:#1b3150; border-radius:9px; }
+    .muted { color:var(--muted); }
+    #message { min-height:25px; color:var(--accent); }
+    footer { text-align:center; color:var(--muted); padding:20px; }
+    @media(max-width:520px) { section { padding:16px; } header { padding:30px 15px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Python: робота зі списками</h1>
+    <p>Основні команди та мініпроєкт «Список спорядження»</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>1. Що таке список?</h2>
+      <p>Список у Python — це набір елементів, записаних у квадратних дужках. Елементи можуть бути текстом, числами або іншими значеннями.</p>
+      <pre>things = ["намет", "вода", "їжа"]
+print(things)</pre>
+    </section>
+
+    <section>
+      <h2>2. Основні команди роботи зі списками</h2>
+      <div class="grid">
+        <div class="item"><h3>Створення списку</h3><pre>items = ["вода", "їжа"]</pre><p class="muted">Створює новий список.</p></div>
+        <div class="item"><h3>Додавання — append()</h3><pre>items.append("ліхтарик")</pre><p class="muted">Додає елемент у кінець.</p></div>
+        <div class="item"><h3>Видалення — remove()</h3><pre>items.remove("вода")</pre><p class="muted">Видаляє перший відповідний елемент.</p></div>
+        <div class="item"><h3>Кількість — len()</h3><pre>print(len(items))</pre><p class="muted">Повертає кількість елементів.</p></div>
+        <div class="item"><h3>Сортування — sort()</h3><pre>items.sort()</pre><p class="muted">Сортує сам список.</p></div>
+        <div class="item"><h3>Новий відсортований список</h3><pre>new_items = sorted(items)</pre><p class="muted">Створює новий список, не змінюючи початковий.</p></div>
+        <div class="item"><h3>Перевірка наявності</h3><pre>if "вода" in items:
+    print("Є у списку")</pre><p class="muted">Перевіряє, чи є елемент у списку.</p></div>
+        <div class="item"><h3>Доступ за індексом</h3><pre>print(items[0])
+print(items[-1])</pre><p class="muted">Показує перший або останній елемент.</p></div>
+        <div class="item"><h3>Перебір елементів</h3><pre>for item in items:
+    print(item)</pre><p class="muted">Послідовно опрацьовує всі елементи.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. Мініпроєкт «Список спорядження»</h2>
+      <p>Ця невелика програма допомагає підготувати речі до походу або подорожі. Можна додавати предмети, видаляти їх і перевіряти, чи є потрібна річ у списку.</p>
+      <div class="controls">
+        <input id="newItem" type="text" placeholder="Введіть назву предмета">
+        <button id="addBtn">Додати предмет</button>
+      </div>
+      <div class="controls">
+        <input id="checkItem" type="text" placeholder="Який предмет перевірити?">
+        <button id="checkBtn" class="secondary">Перевірити</button>
+        <button id="sortBtn" class="secondary">Сортувати</button>
+      </div>
+      <p id="message" aria-live="polite"></p>
+      <h3>Поточний список (<span id="count">0</span> предметів)</h3>
+      <ul id="gearList"></ul>
+      <button id="resetBtn" class="secondary">Відновити початковий список</button>
+    </section>
+
+    <section>
+      <h2>4. Приклад коду Python для мініпроєкту</h2>
+      <pre>things = ["намет", "вода", "їжа", "ліхтарик", "аптечка"]
+
+print("Список спорядження:")
+for item in things:
+    print("-", item)
+
+new_item = input("Додати предмет: ")
+if new_item not in things:
+    things.append(new_item)
+    print("Предмет додано!")
+else:
+    print("Такий предмет уже є.")
+
+check_item = input("Що перевірити? ")
+if check_item in things:
+    print("Цей предмет є у списку.")
+else:
+    print("Цього предмета немає.")
+
+print("Усього предметів:", len(things))</pre>
+      <p class="muted">Інтерактивний приклад вище працює безпосередньо в браузері. Код у цьому блоці показує, як виконати схожі дії мовою Python.</p>
+    </section>
+
+    <section>
+      <h2>5. Перевірка роботи та висновок</h2>
+      <p><strong>Перевірки:</strong></p>
+      <ul>
+        <li>Додати новий предмет — він має з’явитися у списку.</li>
+        <li>Спробувати додати предмет повторно — програма повідомить, що він уже є.</li>
+        <li>Перевірити наявний предмет — програма підтвердить його наявність.</li>
+        <li>Перевірити відсутній предмет — програма повідомить, що його немає.</li>
+        <li>Видалити предмет кнопкою біля нього — список має оновитися.</li>
+      </ul>
+      <p><strong>Висновок:</strong> Під час роботи я ознайомився з основними командами Python для роботи зі списками. Навчився створювати список, додавати й видаляти елементи, перевіряти їх наявність та визначати кількість елементів. Мініпроєкт показує, як списки можна використовувати в повсякденному житті для підготовки до подорожі.</p>
+    </section>
+  </main>
+  <footer>Навчальний мініпроєкт • Python: колекції та списки</footer>
+
+  <script>
+    const initialItems = ["намет", "вода", "їжа", "ліхтарик", "аптечка", "компас", "рюкзак", "спальник", "зарядний пристрій", "теплий одяг"];
+    let things = [...initialItems];
+    const list = document.getElementById("gearList");
+    const count = document.getElementById("count");
+    const message = document.getElementById("message");
+
+    function render() {
+      list.innerHTML = "";
+      things.forEach((item, index) => {
+        const li = document.createElement("li");
+        const span = document.createElement("span");
+        span.textContent = item;
+        const button = document.createElement("button");
+        button.textContent = "Видалити";
+        button.className = "remove";
+        button.addEventListener("click", () => {
+          things.splice(index, 1);
+          message.textContent = `Предмет «${item}» видалено.`;
+          render();
+        });
+        li.append(span, button);
+        list.appendChild(li);
+      });
+      count.textContent = things.length;
+      if (things.length === 0) {
+        const li = document.createElement("li");
+        li.textContent = "Список поки порожній.";
+        list.appendChild(li);
+      }
+    }
+
+    document.getElementById("addBtn").addEventListener("click", () => {
+      const input = document.getElementById("newItem");
+      const item = input.value.trim();
+      if (!item) { message.textContent = "Спочатку введіть назву предмета."; return; }
+      if (things.some(x => x.toLowerCase() === item.toLowerCase())) {
+        message.textContent = "Такий предмет уже є у списку."; return;
+      }
+      things.push(item);
+      input.value = "";
+      message.textContent = `Предмет «${item}» додано.`;
+      render();
+    });
+
+    document.getElementById("checkBtn").addEventListener("click", () => {
+      const item = document.getElementById("checkItem").value.trim();
+      if (!item) { message.textContent = "Введіть назву предмета для перевірки."; return; }
+      const found = things.some(x => x.toLowerCase() === item.toLowerCase());
+      message.textContent = found ? `Так, «${item}» є у списку.` : `Предмета «${item}» немає у списку.`;
+    });
+
+    document.getElementById("sortBtn").addEventListener("click", () => {
+      things.sort((a, b) => a.localeCompare(b, "uk"));
+      message.textContent = "Список відсортовано за абеткою.";
+      render();
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      things = [...initialItems];
+      message.textContent = "Початковий список відновлено.";
+      render();
+    });
+
+    document.getElementById("newItem").addEventListener("keydown", e => {
+      if (e.key === "Enter") document.getElementById("addBtn").click();
+    });
+    render();
+  </script>
+</body>
+</html>
